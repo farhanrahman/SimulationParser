@@ -6,6 +6,8 @@ package com.data;
 import java.util.Map;
 
 /**
+ * Datafield to parse
+ * countries on their own 
  * @author farhanrahman
  *
  */
@@ -17,9 +19,11 @@ public class Countries {
 	
 	public String toString(){
 		String s = "";
+		if(countries == null){
+			System.out.println("Problem");
+		}
 		for(String key : countries.keySet()){
 			s += countries.get(key).toString();
-			s += "\n";
 		}
 		return s;
 	}

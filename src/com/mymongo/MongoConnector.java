@@ -10,8 +10,8 @@ import java.util.Set;
 import net.sf.json.JSONObject;
 
 import com.data.Countries;
-import com.data.Country;
 import com.data.CountryData;
+import com.data.SimulationData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -20,9 +20,11 @@ import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
+import com.mongodb.util.JSON;
 
 /**
  * @author farhanrahman
@@ -117,10 +119,28 @@ public class MongoConnector {
         BasicDBObject query = new BasicDBObject();
         
         query.put("_id", 8);
+        DBCursor cur = collection.find(query);
         
-        List<DBObject> obj = collection.find(query).toArray();
+        while(cur.hasNext()) {
+        	DBObject ob = cur.next();
+            //System.out.println(ob.toString());
+        	Gson gson = new GsonBuilder().create();
+        	String json = JSON.serialize(ob);
+        	//System.out.println(json);
+			SimulationData data = gson.fromJson(json, SimulationData.class);
+		    
+			System.out.println(data.toString());        	
+        }
         
-        for(DBObject d : obj){
+//        List<DBObject> obj = collection.find(query).toArray();
+//        for(DBObject d : obj){
+//        	Gson gson = new GsonBuilder().create();
+//			
+//			//String message = gson.fromJson(array.get(0), String.class);
+//			Countries data = gson.fromJson(json, Countries.class);        	
+//        }
+//        
+       /* for(DBObject d : obj){
         	//System.out.println(d);
         	for(String key : d.keySet()){
         		//if(key.equals("countries")){
@@ -142,7 +162,7 @@ public class MongoConnector {
         			System.out.println(data.toString());
                 }
         	}
-        }
+        }*/
         
 		this.closeConnection();
 	}
