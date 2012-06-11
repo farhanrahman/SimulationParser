@@ -141,7 +141,7 @@ public class MongoConnector {
         			//System.out.println(d.get(key));
         			Gson gson = new GsonBuilder().create();
         			String json = "{'AUS':{ 'Type' : 'Group 1/2' , 'name' : 'Australia' , 'ISO' : 'AUS' , 'agentName' : 'EU' , 'Ratified' : '39419' , 'totalArea' : '7692024' , 'landArea' : '7682300' , 'waterArea' : '58920' , 'arableLandArea' : '468503' , 'GDP' : '3.00893E+11' , 'GDPRate' : '0' , 'availableToSpend' : '0' , 'emissionsTarget' : '305994' , 'carbonOffset' : '0' , 'energyOutput' : '423248' , 'carbonOutput' : '0'}}";
-        			Country data = gson.fromJson(json, Country.class);
+        			Countries data = gson.fromJson(json, Countries.class);
         			System.out.println(data.toString());
                 }
         	}
