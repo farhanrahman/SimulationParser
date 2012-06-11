@@ -4,19 +4,9 @@
 package com.mymongo;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
-import org.apache.commons.beanutils.DynaBean;
-import org.bson.BSONObject;
-
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.data.Countries;
@@ -24,14 +14,15 @@ import com.data.Country;
 import com.data.CountryData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mongodb.Mongo;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mongodb.DBCursor;
+import com.mongodb.Mongo;
 import com.mongodb.MongoException;
-import com.mongodb.util.JSON;
 
 /**
  * @author farhanrahman
@@ -128,6 +119,7 @@ public class MongoConnector {
         query.put("_id", 8);
         
         List<DBObject> obj = collection.find(query).toArray();
+        
         for(DBObject d : obj){
         	//System.out.println(d);
         	for(String key : d.keySet()){
@@ -136,12 +128,17 @@ public class MongoConnector {
         		//	c.output();
         		//}
         		//String json = "{ 'Type' : 'Group 1/2' , 'name' : 'Australia' , 'ISO' : 'AUS' , 'agentName' : 'EU' , 'Ratified' : '39419' , 'totalArea' : '7692024' , 'landArea' : '7682300' , 'waterArea' : '58920' , 'arableLandArea' : '468503' , 'GDP' : '3.00893E+11' , 'GDPRate' : '0' , 'availableToSpend' : '0' , 'emissionsTarget' : '305994' , 'carbonOffset' : '0' , 'energyOutput' : '423248' , 'carbonOutput' : '0'}";
-                
+        		//String json = "{\"AUS\":{ \"Type\" : \"Group 1/2\" , \"name\" : \"Australia\" , \"ISO\" : \"AUS\" , \"agentName\" : \"EU\" , \"Ratified\" : \"39419\" , \"totalArea\" : \"7692024\" , \"landArea\" : \"7682300\" , \"waterArea\" : \"58920\" , \"arableLandArea\" : \"468503\" , \"GDP\" : \"3.00893E+11\" , \"GDPRate\" : \"0\" , \"availableToSpend\" : \"0\" , \"emissionsTarget\" : \"305994\" , \"carbonOffset\" : \"0\" , \"energyOutput\" : \"423248\" , \"carbonOutput\" : \"0\"}}";
+                          
         		if(key.equals("countries")){
         			//System.out.println(d.get(key));
+        			System.out.println(d.get(key));
         			Gson gson = new GsonBuilder().create();
-        			String json = "{'AUS':{ 'Type' : 'Group 1/2' , 'name' : 'Australia' , 'ISO' : 'AUS' , 'agentName' : 'EU' , 'Ratified' : '39419' , 'totalArea' : '7692024' , 'landArea' : '7682300' , 'waterArea' : '58920' , 'arableLandArea' : '468503' , 'GDP' : '3.00893E+11' , 'GDPRate' : '0' , 'availableToSpend' : '0' , 'emissionsTarget' : '305994' , 'carbonOffset' : '0' , 'energyOutput' : '423248' , 'carbonOutput' : '0'}}";
+        			String json = "{'countries':{'AUS':{ 'Type' : 'Group 1/2' , 'name' : 'Australia' , 'ISO' : 'AUS' , 'agentName' : 'EU' , 'Ratified' : '39419' , 'totalArea' : '7692024' , 'landArea' : '7682300' , 'waterArea' : '58920' , 'arableLandArea' : '468503' , 'GDP' : '3.00893E+11' , 'GDPRate' : '0' , 'availableToSpend' : '0' , 'emissionsTarget' : '305994' , 'carbonOffset' : '0' , 'energyOutput' : '423248' , 'carbonOutput' : '0'},'CHN' : { 'Type' : 'Group 3' , 'name' : 'China, Peoples Republic of' , 'ISO' : 'CHN' , 'agentName' : 'NonAnnexOne' , 'Ratified' : '37498' , 'totalArea' : '9596961' , 'landArea' : '9569901' , 'waterArea' : '27060' , 'arableLandArea' : '1385905', 'GDP' : '3.97467E+11' , 'GDPRate' : '0' , 'availableToSpend' : '0' , 'emissionsTarget' : '3259619' , 'carbonOffset' : '0' , 'energyOutput' : '8094626' , 'carbonOutput' : '0'}}}";
+        			
+        			//String message = gson.fromJson(array.get(0), String.class);
         			Countries data = gson.fromJson(json, Countries.class);
+        		    
         			System.out.println(data.toString());
                 }
         	}

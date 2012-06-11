@@ -7,29 +7,25 @@ package com.data;
  *
  */
 public class CountryData{
-	private String id;
-	private String ISO;
-	private String name;
-	private String agentName;
 	private String Type;
+	private String name;	
+	private String ISO;
+	private String agentName;
 	private Long Ratified;
 	private Long totalArea;
+	private Long landArea;
 	private Long waterArea;
 	private Long arableLandArea;
 	private Long GDP;
 	private Long GDPRate;
-	private Long landArea;
 	private Long availableToSpend;
 	private Long emissionsTarget;
 	private Long carbonOffset;
 	private Long energyOutput;
 	private Long carbonOutput;
 	
-	//public CountryData(){}
-	
 	public String toString(){
 		String s = "";
-		s += " id: " + id;
 		s += " ISO: " + ISO;
 		s += " name: " + name;
 		s += " agentName: " + agentName;
@@ -50,8 +46,6 @@ public class CountryData{
 		
 	}
 	
-	public void setID(String id){this.id = id;}
-	public String getID(){return this.id;}
 	public String getName(){return name;}
 	public void setName(String name) {this.name = name;}
 	public String getISO(){return ISO;}
