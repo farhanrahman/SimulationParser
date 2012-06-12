@@ -3,7 +3,10 @@
  */
 package com.mymongo;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Properties;
 import java.util.Set;
 
 import com.data.SimulationData;
@@ -24,6 +27,7 @@ import com.mongodb.util.JSON;
  */
 public class MongoConnector {
 
+	/*DEFAULT PORTS AND HOSTS*/
 	private Integer port = 27017;
 	private String host = "localhost";
 	private String dbName = "presage";
@@ -42,6 +46,7 @@ public class MongoConnector {
 	
 	public MongoConnector(){
 		this.SHOULD_AUTHENTICATE = false;
+		this.host = this.getHostFromDBProperties();
 		try {
 			this.m = new Mongo(this.host, this.port);
 		} catch (UnknownHostException e) {
@@ -66,6 +71,25 @@ public class MongoConnector {
 		this.port = Integer.parseInt(port);
 		this.host = host;
 		this.dbName = dbName;
+	}
+	
+	/**
+	 * Read from db.properties file
+	 * and update the host currently
+	 * being used.
+	 * @return
+	 */
+	private String getHostFromDBProperties(){
+		Properties dbProperty = new Properties();
+		try{
+			String h = "";
+			dbProperty.load(new FileInputStream("src/main/resources/db.properties"));
+			h = dbProperty.getProperty("mongo.host");
+			return h;
+		}catch(IOException e){
+			e.printStackTrace();
+			return this.host;
+		}
 	}
 	
 	private void openConnection(){
@@ -110,7 +134,7 @@ public class MongoConnector {
 		DBCollection collection = db.getCollection("simulations");
         BasicDBObject query = new BasicDBObject();
         
-        query.put("_id", 8);
+        query.put("_id", 1);
         DBCursor cur = collection.find(query);
         
         while(cur.hasNext()) {
