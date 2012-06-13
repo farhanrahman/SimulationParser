@@ -1,15 +1,16 @@
 /**
  * 
  */
-package com.data;
+package main.data;
 
 import java.util.List;
+
+import main.mymongo.MongoConnector;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mongodb.DBObject;
 import com.mongodb.util.JSON;
-import com.mymongo.MongoConnector;
 
 /**
  * @author farhanrahman

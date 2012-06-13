@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.data;
+package main.data;
 
 /**
  * Generic container for Java Object

@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.main;
+package main;
 
-import com.data.DataProvider;
-import com.data.JSONObjectContainer;
-import com.data.SimulationData;
+import main.data.DataProvider;
+import main.data.JSONObjectContainer;
+import main.data.SimulationData;
 
 /**
  * @author farhanrahman
