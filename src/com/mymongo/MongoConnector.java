@@ -6,9 +6,13 @@ package com.mymongo;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+import com.data.JSONObjectContainer;
 import com.data.SimulationData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,6 +43,7 @@ public class MongoConnector {
 	private DB db;
 	
 	private final boolean SHOULD_AUTHENTICATE;
+	private final String collectionName = "simulations";
 	
 	/**
 	 * 
@@ -92,14 +97,16 @@ public class MongoConnector {
 		}
 	}
 	
-	private void openConnection(){
+	private boolean openConnection(){
 		try {
 			this.m = new Mongo(this.host,this.port);
+			return true;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (MongoException e) {
 			e.printStackTrace();
-		}		
+		}
+		return false;
 	}
 	
 	private void closeConnection(){
@@ -152,6 +159,68 @@ public class MongoConnector {
 	}
 	
 
+	public JSONObjectContainer<SimulationData> getSimulationData(Integer simID){
+		
+		JSONObjectContainer<SimulationData> o = new JSONObjectContainer<SimulationData>();
+		
+		if(this.openConnection() == false){
+			return o;
+		}
+		
+		this.db = m.getDB(this.dbName);
+		
+		if(this.SHOULD_AUTHENTICATE == true){
+			this.authenticate();
+		}
+		
+		DBCollection collection = db.getCollection(this.collectionName);
+        BasicDBObject query = new BasicDBObject();
+        
+        query.put("_id", simID);
+        DBCursor cur = collection.find(query);
+        
+        while(cur.hasNext()) {
+        	DBObject ob = cur.next();
+        	Gson gson = new GsonBuilder().create();
+        	String json = JSON.serialize(ob);
+        	json = json.replaceAll("\"\"", "0");
+			SimulationData data = gson.fromJson(json, SimulationData.class);
+			o.setObject(data);
+        }
+        
+		this.closeConnection();
+		
+		return o;
+	}
+	
+	public List<DBObject> getDBObjects(Integer simID){
+		List<DBObject> list = new ArrayList<DBObject>();
+
+		if(this.openConnection() == false){
+			return list;
+		}
+		
+		this.db = m.getDB(this.dbName);
+		
+		if(this.SHOULD_AUTHENTICATE == true){
+			this.authenticate();
+		}		
+		
+		DBCollection collection = db.getCollection(this.collectionName);
+        BasicDBObject query = new BasicDBObject();
+        
+        query.put("_id", simID);
+        DBCursor cur = collection.find(query);		
+
+        while(cur.hasNext()) {
+        	list.add(cur.next());
+        }
+        
+		this.closeConnection();
+        
+		return Collections.unmodifiableList(list);
+	}
+	
 	/*======GETTERS AND SETTERS=====*/
 	
 	public Integer getPort() {
