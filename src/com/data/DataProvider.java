@@ -35,6 +35,16 @@ public class DataProvider {
 		this.mongoConnector = new MongoConnector(host,port,dbName);
 	}
 	
+	/**
+	 * Gets a list of DBObjects from
+	 * the mongodb, which reads from
+	 * collection "simulations". The list
+	 * from the mongoConnector is then
+	 * converted to a Java Object and returned
+	 * to the caller.
+	 * @param simID
+	 * @return
+	 */
 	public JSONObjectContainer<SimulationData> getSimulationData(Integer simID){
 		
 		JSONObjectContainer<SimulationData> o = new JSONObjectContainer<SimulationData>();
